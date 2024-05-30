@@ -16,7 +16,7 @@ services:
       retries: 20
       interval: 10s
     networks:
-      networkNiDeadlyDeadly:
+      - networkNiDeadlyDeadly
 
   
   broker2:
@@ -46,7 +46,7 @@ services:
       timeout: 10s
       retries: 10
     networks:
-      networkNiDeadlyDeadly:
+      - networkNiDeadlyDeadly
 
 
   control_center:
@@ -67,7 +67,7 @@ services:
       CONFLIENT_METRICS_ENABLE: 'false'
       PORT: 9021
     networks:
-      networkNiDeadlyDeadly:
+      - networkNiDeadlyDeadly
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9021/health" ]
       interval: 30s
@@ -81,7 +81,7 @@ services:
     container_name: debezium
     hostname: debezium
     depends_on:
-      postgres2:
+      postgres:
         condition: service_healthy
       broker2:
         condition: service_healthy
@@ -105,7 +105,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      networkNiDeadlyDeadly:
+      - networkNiDeadlyDeadly
 
 
   debezium-ui:
@@ -120,13 +120,13 @@ services:
     environment:
       KAFKA_CONNECT_URIS: http://debezium:8083
     networks:
-      networkNiDeadlyDeadly:
+      - networkNiDeadlyDeadly
 
 
-  postgres2:
+  postgres:
     image: postgres:latest
-    container_name: postgres2
-    hostname: postgres2
+    container_name: postgres
+    hostname: postgres
     ports:
       - '5432:5432'
     environment:
@@ -142,7 +142,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      networkNiDeadlyDeadly:
+      - networkNiDeadlyDeadly
   
 
 networks:
